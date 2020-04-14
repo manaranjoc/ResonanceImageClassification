@@ -133,3 +133,6 @@ chest_xray/
 
 #Visual Code
 .vscode/
+
+#Debugging Files
+pre-processing.ipynb
