@@ -1,5 +1,6 @@
 import os
 from PIL import Image, ImageFilter
+from numpy import asarray
 
 def loadImages(path, dataSet, dataType):
     image_files = sorted([
@@ -25,4 +26,15 @@ def gaussianBlur(imageList, radius):
 def grayReduction(imageList):
     return [
         image.convert('L') for image in imageList
+    ]
+
+def imageStandarization(image):
+    pixels = asarray(image)
+    pixels = pixels.astype('float32')
+    mean, std = pixels.mean, pixels.std()
+    pixels = (pixels-mean)/std
+
+def imagesStandarization(imageList):
+    return [
+        imageStandarization(image) for image in imageList
     ]
