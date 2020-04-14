@@ -16,8 +16,13 @@ def resizing(imageList, size):
     ]
     return resizedImages
 
-def gaussianBlur(resizedImages, radius):
+def gaussianBlur(imageList, radius):
     blurImages = [
-        image.filter(ImageFilter.GaussianBlur(radius)) for image in resizedImages
+        image.filter(ImageFilter.GaussianBlur(radius)) for image in imageList
     ]
     return blurImages
+
+def grayTransformer(imageList):
+    return [
+        image.convert('L') for image in imageList
+    ]
