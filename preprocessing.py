@@ -40,6 +40,18 @@ def imagesStandarization(imageList):
         imageStandarization(image) for image in imageList
     ]
 
+def imageNormalization(image):
+    pixels = np.asarray(image)
+    pixels = pixels.astype('float32')
+    maximum, minimum = pixels.max(), pixels.min()
+    pixels = (pixels-minimum)/(maximum-minimum)
+    return pixels
+
+def imagesNormalization(imageList):
+    return [
+        imageNormalization(image) for image in imageList
+    ]
+
 def arrayToImage(array):
-    return Image.fromarray(np.uint8(array))
+    return Image.fromarray(array)
     
