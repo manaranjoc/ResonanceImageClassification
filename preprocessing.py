@@ -22,7 +22,7 @@ def gaussianBlur(imageList, radius):
     ]
     return blurImages
 
-def grayTransformer(imageList):
+def grayReduction(imageList):
     return [
         image.convert('L') for image in imageList
     ]
