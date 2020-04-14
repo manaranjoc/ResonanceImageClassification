@@ -1,6 +1,6 @@
 import os
 from PIL import Image, ImageFilter
-from numpy import asarray
+import numpy as np
 
 def loadImages(path, dataSet, dataType):
     image_files = sorted([
@@ -29,12 +29,17 @@ def grayReduction(imageList):
     ]
 
 def imageStandarization(image):
-    pixels = asarray(image)
+    pixels = np.asarray(image)
     pixels = pixels.astype('float32')
-    mean, std = pixels.mean, pixels.std()
+    mean, std = pixels.mean(), pixels.std()
     pixels = (pixels-mean)/std
+    return pixels
 
 def imagesStandarization(imageList):
     return [
         imageStandarization(image) for image in imageList
     ]
+
+def arrayToImage(array):
+    return Image.fromarray(np.uint8(array))
+    
