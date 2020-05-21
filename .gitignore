@@ -136,3 +136,6 @@ chest_xray/
 
 #Debugging Files
 pre-processing.ipynb
+
+#Generated Images
+saved_images/*

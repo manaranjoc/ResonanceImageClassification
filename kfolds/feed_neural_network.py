@@ -1,5 +1,5 @@
 import numpy as np
-import random
+from sklearn.model_selection import KFold
 from preprocessing import loadImages, resizing, grayReduction, imagesStandarization
 
 from keras.models import Sequential
@@ -16,23 +16,21 @@ train_images = np.load('saved_images/images_array_standar.npy')
 x = train_images[:,:-1]
 y = train_images[:,-1]
 
+kf = KFold(n_splits=10)
+kf.get_n_splits(x)
+
 model.compile(optimizer='adam',loss='binary_crossentropy',metrics=["accuracy"])
-model.fit(x,y,batch_size=100,epochs=100)
 
-images = loadImages("chest_xray","val","NORMAL")
-images2 = loadImages("chest_xray","val","PNEUMONIA")
-images = resizing(images, (128,128))
-images2 = resizing(images2, (128,128))
-images = grayReduction(images)
-images2 = grayReduction(images2)
-images = imagesStandarization(images)
-images2 = imagesStandarization(images2)
-y = np.concatenate((np.zeros(len(images)),np.ones(len(images2))))
-x = images + images2
-x = np.array(x).reshape((16,16384))
-y = np.array(y)
+exactitud = 0
 
-z = model.evaluate(x,y)
+for train_index, test_index in kf.split(x):
+    X_train, X_test = x[train_index], x[test_index]
+    y_train, y_test = y[train_index], y[test_index]
+    model.fit(X_train,y_train,batch_size=100,epochs=100)
 
-print(z)
+    exactitud += model.evaluate(X_test,y_test)
+
+error_promedio = 1-(exactitud/10)
+
+print('Error para red: ',error_promedio)
 
