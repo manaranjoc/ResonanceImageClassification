@@ -1,6 +1,6 @@
 import numpy as np
 import random
-from preprocessing import loadImages, resizing, grayReduction, imagesStandarization, imagesNormalization
+from preprocessing import loadImages, resizing, grayReduction, imagesStandarization, imagesNormalization, imagesToArray
 
 images_normal = loadImages("chest_xray","train","NORMAL")
 images_pneumonia = loadImages("chest_xray","train","PNEUMONIA")
@@ -48,3 +48,22 @@ y_normal = np.array(y_normal).reshape((5216,1))
 
 dump_array = np.concatenate((x_normal,y_normal),axis=1)
 np.save('saved_images/images_array_normal.npy', dump_array)
+
+#Sin edición
+images_normal = imagesToArray(images_normal)
+images_pneumonia = imagesToArray(images_pneumonia)
+
+y = np.concatenate((np.zeros(len(images_normal)),np.ones(len(images_pneumonia))))
+x = images_normal + images_pneumonia
+
+temp = list(zip(x,y))
+random.shuffle(temp)
+x,y = zip(*temp)
+x = list(x)
+y = list(y)
+
+x = np.array(x).reshape((5216,16384))
+y = np.array(y).reshape((5216,1))
+
+dump_array = np.concatenate((x,y),axis=1)
+np.save('saved_images/images_array.npy', dump_array)
