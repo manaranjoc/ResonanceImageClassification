@@ -1,6 +1,5 @@
 import numpy as np
 from sklearn.model_selection import KFold
-from preprocessing import loadImages, resizing, grayReduction, imagesStandarization
 
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation
@@ -12,7 +11,7 @@ model.add(Dense(100, activation='relu'))
 model.add(Dense(100, activation='relu'))
 model.add(Dense(1, activation='relu'))
 
-train_images = np.load('saved_images/images_array_standar.npy')
+train_images = np.load('../saved_images/images_array_standar.npy')
 x = train_images[:,:-1]
 y = train_images[:,-1]
 
@@ -28,7 +27,7 @@ for train_index, test_index in kf.split(x):
     y_train, y_test = y[train_index], y[test_index]
     model.fit(X_train,y_train,batch_size=100,epochs=100)
 
-    exactitud += model.evaluate(X_test,y_test)
+    exactitud += model.evaluate(X_test,y_test, verbose=0)[1]
 
 error_promedio = 1-(exactitud/10)
 

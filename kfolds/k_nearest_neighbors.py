@@ -4,7 +4,7 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 
-train_images = np.load('saved_images/images_array_standar.npy')
+train_images = np.load('../saved_images/images_array_normal.npy')
 x = train_images[:,:-1]
 y = train_images[:,-1]
 
@@ -19,7 +19,7 @@ error_by_k = np.zeros(k)
 
 
 for i in range(1,k+1):
-    clf = KNeighborsClassifier(n_neighbors=i, weights='uniform',n_jobs=4)
+    clf = KNeighborsClassifier(n_neighbors=i, weights='uniform',n_jobs=-1)
     exactitud = 0
     for train_index, test_index in kf.split(x):
         X_train, X_test = x[train_index], x[test_index]

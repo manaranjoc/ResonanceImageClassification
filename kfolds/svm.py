@@ -1,24 +1,21 @@
-from sklearn.svm import SVC
+from sklearn.svm import LinearSVC
 from sklearn.model_selection import KFold
 import numpy as np
 
-import matplotlib.pyplot as plt
-
-train_images = np.load('saved_images/images_array_standar.npy')
+train_images = np.load('../saved_images/images_array_normal.npy')
 x = train_images[:,:-1]
 y = train_images[:,-1]
 
-C = np.logspace(-3,2,5)
-Gamma = np.logspace(-3,2,5)
+C = np.logspace(1,2,2)
+Gamma = np.logspace(-3,2,6)
 
 kf = KFold(n_splits=10)
 kf.get_n_splits(x)
 
-error_by_parameter = np.zeros((5,5))
+error_by_parameter = np.zeros((6,6))
 i = 0
 for c in C:
-    for gamma in Gamma:
-        clf = SVC(kernel='rbf', C=c, gamma=gamma)
+        clf = LinearSVC(C=c, max_iter = 100000)
         exactitud = 0
         for train_index, test_index in kf.split(x):
             X_train, X_test = x[train_index], x[test_index]
@@ -30,7 +27,7 @@ for c in C:
 
         error_promedio = 1-(exactitud/10)
 
-        print('Error para C=', c, ' y gamma=', gamma,': ',error_promedio)
+        print('Error para C=', c ,error_promedio)
 
         error_by_parameter[int(i/5),i%5]=error_promedio
         i += 1

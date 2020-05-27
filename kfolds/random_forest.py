@@ -4,7 +4,7 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 
-train_images = np.load('saved_images/images_array_standar.npy')
+train_images = np.load('../saved_images/images_array_normal.npy')
 x = train_images[:,:-1]
 y = train_images[:,-1]
 
