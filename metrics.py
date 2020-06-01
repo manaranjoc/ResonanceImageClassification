@@ -1,4 +1,5 @@
 from sklearn.metrics import confusion_matrix
+import numpy as np
 
 def metrics(y_true, y_pred):
     (tn, fp, fn, tp) = confusion_matrix(y_true, y_pred).ravel()
@@ -27,9 +28,12 @@ def f1(fp, fn, tp):
     prec = precision(tp, fp)
     return 2*(sens*prec)/(sens+prec)
     
-def print_metrics(metrics):
+def printMetrics(metrics):
     print('Accuracy: ', metrics[0])
     print('Precision: ', metrics[1])
     print('Sensitivity: ', metrics[2])
     print('Specificity: ', metrics[3])
     print('F1 score: ', metrics[4])
+
+def meanMetrics(metrics):
+    return np.mean(metrics, axis=0)
