@@ -5,6 +5,9 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation
 from keras.metrics import accuracy
 
+
+import time
+
 import sys
 from pathlib import Path
 sys.path[0] = str(Path(sys.path[0]).parent)
@@ -32,6 +35,8 @@ model.compile(optimizer='adam',loss='binary_crossentropy',metrics=["accuracy"])
 exactitud = np.zeros((num_splits, 5))
 iteration = 0
 
+start = time.time()
+
 for train_index, test_index in kf.split(x):
     X_train, X_test = x[train_index], x[test_index]
     y_train, y_test = y[train_index], y[test_index]
@@ -41,6 +46,9 @@ for train_index, test_index in kf.split(x):
 
     exactitud[iteration,:] = metrics(y_test, y_pred)
     iteration += 1
+
+
+elapsed_time = time.time()-start
 
 mean_metrics = meanMetrics(exactitud)
 printMetrics(mean_metrics)

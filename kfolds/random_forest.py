@@ -4,6 +4,9 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 
+
+import time
+
 import sys
 from pathlib import Path
 sys.path[0] = str(Path(sys.path[0]).parent)
@@ -24,6 +27,8 @@ kf.get_n_splits(x)
 error_by_B = np.zeros(5)
 
 i = 0
+
+start = time.time()
 
 for B in range(10,51,10):
 
@@ -51,6 +56,9 @@ for B in range(10,51,10):
 
     error_by_B[i, :]=error_promedio
     i+=1
+
+elapsed_time = time.time()-start
+print('Elapsed time for one neuron Classification: ',elapsed_time)
 
 plt.plot(range(10,51,10), error_by_B[:, 0], 'b--')
 plt.xlabel('Numero de Arboles')

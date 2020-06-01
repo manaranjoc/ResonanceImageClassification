@@ -2,6 +2,9 @@ from sklearn.svm import LinearSVC
 from sklearn.model_selection import KFold
 import numpy as np
 
+
+import time
+
 import matplotlib.pyplot as plt
 
 import sys
@@ -9,6 +12,7 @@ from pathlib import Path
 sys.path[0] = str(Path(sys.path[0]).parent)
 
 from metrics import metrics, meanMetrics, printMetrics
+
 
 train_images = np.load('../saved_images/images_array_normal.npy')
 x = train_images[:,:-1]
@@ -24,6 +28,9 @@ kf.get_n_splits(x)
 
 error_by_parameter = np.zeros((6,5))
 i = 0
+
+start = time.time()
+
 for c in C:
     clf = LinearSVC(C=c, max_iter = 100000)
 
@@ -49,4 +56,9 @@ for c in C:
     error_by_parameter[i,:]=error_promedio
     i += 1
 
+
+elapsed_time = time.time()-start
+print('Elapsed time for one neuron Classification: ',elapsed_time)
+
 plt.plot(C, error_by_parameter[:,0], 'b--')
+
