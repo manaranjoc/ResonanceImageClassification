@@ -4,6 +4,8 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 
+import time
+
 import sys
 from pathlib import Path
 sys.path[0] = str(Path(sys.path[0]).parent)
@@ -11,6 +13,7 @@ sys.path[0] = str(Path(sys.path[0]).parent)
 from metrics import metrics, meanMetrics, printMetrics
 
 train_images = np.load('../saved_images/images_array_normal.npy')
+
 x = train_images[:,:-1]
 y = train_images[:,-1]
 
@@ -24,6 +27,8 @@ kf.get_n_splits(x)
 k = 10
 
 error_by_k = np.zeros((k, 5))
+
+start = time.time()
 
 for i in range(1,k+1):
     clf = KNeighborsClassifier(n_neighbors=i, weights='uniform',n_jobs=-1)
@@ -49,6 +54,9 @@ for i in range(1,k+1):
     printMetrics(error_promedio)
 
     error_by_k[i-1, :]=error_promedio
+
+
+elapsed_time = time.time()-start
 
 plt.plot(range(1,k+1), error_by_k[:,0], 'b--')
 plt.xlabel('Numero de vecinos')
