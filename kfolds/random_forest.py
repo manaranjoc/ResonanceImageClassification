@@ -4,6 +4,8 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 
+import time
+
 train_images = np.load('../saved_images/images_array_normal.npy')
 x = train_images[:,:-1]
 y = train_images[:,-1]
@@ -16,6 +18,8 @@ kf.get_n_splits(x)
 error_by_B = np.zeros(5)
 
 i = 0
+
+start = time.time()
 
 for B in range(10,51,10):
     exactitud = 0
@@ -34,6 +38,9 @@ for B in range(10,51,10):
 
     error_by_B[i]=error_promedio
     i+=1
+
+elapsed_time = time.time()-start
+print('Elapsed time for one neuron Classification: ',elapsed_time)
 
 plt.plot(range(10,51,10), error_by_B, 'b--')
 plt.xlabel('Numero de Arboles')

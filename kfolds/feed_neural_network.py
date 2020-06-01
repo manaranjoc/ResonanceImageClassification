@@ -5,6 +5,8 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation
 from keras.metrics import accuracy
 
+import time
+
 model = Sequential()
 model.add(Dense(10, activation='relu',input_dim=16384))
 model.add(Dense(100, activation='relu'))
@@ -22,6 +24,8 @@ model.compile(optimizer='adam',loss='binary_crossentropy',metrics=["accuracy"])
 
 exactitud = 0
 
+start = time.time()
+
 for train_index, test_index in kf.split(x):
     X_train, X_test = x[train_index], x[test_index]
     y_train, y_test = y[train_index], y[test_index]
@@ -33,3 +37,4 @@ error_promedio = 1-(exactitud/10)
 
 print('Error para red: ',error_promedio)
 
+elapsed_time = time.time()-start

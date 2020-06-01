@@ -4,7 +4,9 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 
-train_images = np.load('../saved_images/images_array_normal.npy')
+import time
+
+train_images = np.load('saved_images/images_array_normal.npy')
 x = train_images[:,:-1]
 y = train_images[:,-1]
 
@@ -16,6 +18,8 @@ kf.get_n_splits(x)
 k = 10
 
 error_by_k = np.zeros(k)
+
+start = time.time()
 
 
 for i in range(1,k+1):
@@ -34,6 +38,8 @@ for i in range(1,k+1):
     print('Error para', i, ' vecinos: ',error_promedio)
 
     error_by_k[i-1]=error_promedio
+
+elapsed_time = time.time()-start
 
 plt.plot(range(1,k+1), error_by_k, 'b--')
 plt.xlabel('Numero de vecinos')
