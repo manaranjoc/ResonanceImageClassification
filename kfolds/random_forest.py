@@ -13,7 +13,7 @@ sys.path[0] = str(Path(sys.path[0]).parent)
 
 from metrics import metrics, meanMetrics, printMetrics
 
-train_images = np.load('../saved_images/images_array_normal.npy')
+train_images = np.load('saved_images/images_array.npy')
 x = train_images[:,:-1]
 y = train_images[:,-1]
 
@@ -24,7 +24,7 @@ num_splits = 10
 kf = KFold(n_splits=num_splits)
 kf.get_n_splits(x)
 
-error_by_B = np.zeros(5)
+error_by_B = np.zeros((5,5))
 
 i = 0
 
@@ -35,7 +35,7 @@ for B in range(10,51,10):
     error_promedio = np.zeros((num_splits, 5))
     iteration = 0
 
-    clf = RandomForestClassifier(n_estimators=B)
+    clf = RandomForestClassifier(n_estimators=B, n_jobs=-1)
 
     for train_index, test_index in kf.split(x):
         X_train, X_test = x[train_index], x[test_index]
