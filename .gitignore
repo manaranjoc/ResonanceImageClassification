@@ -139,3 +139,6 @@ pre-processing.ipynb
 
 #Generated Images
 saved_images/*
+
+#Intermediate Results
+res.dat
