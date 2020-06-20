@@ -2,6 +2,8 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import KFold
 import numpy as np
 
+from joblib import load
+
 import matplotlib.pyplot as plt
 
 import time
@@ -10,7 +12,7 @@ import sys
 from pathlib import Path
 sys.path[0] = str(Path(sys.path[0]).parent)
 
-from metrics import metrics, meanMetrics, printMetrics
+from metrics import metrics, meanMetrics, printMetrics, stdMetrics
 
 train_images = np.load('saved_images/images_array_standar.npy')
 
@@ -18,6 +20,9 @@ x = train_images[:,:-1]
 y = train_images[:,-1]
 
 print("Images already Loaded")
+
+feature_model=load('feature_extraction.joblib')
+x = feature_model.transform(x)
 
 num_splits = 10
 
@@ -32,7 +37,8 @@ start = time.time()
 
 saveFile = open('res.dat', 'w')
 
-for i in range(1,k+1):
+for i in [8]:
+#for i in range(1,k+1):
     clf = KNeighborsClassifier(n_neighbors=i, weights='uniform',n_jobs=-1)
 
     error_promedio = np.zeros((num_splits,5))
@@ -49,6 +55,7 @@ for i in range(1,k+1):
         error_promedio[iteration, :] = metrics(y_test, y_pred)
         iteration += 1
 
+    error_standard = stdMetrics(error_promedio)
     error_promedio = meanMetrics(error_promedio)
 
     np.savetxt(saveFile, error_promedio)
@@ -56,6 +63,9 @@ for i in range(1,k+1):
     print('Error para', i, ' vecinos: ')
     print('########################################')
     printMetrics(error_promedio)
+    print('Desviación estandar')
+    print('########################################')
+    printMetrics(error_standard)
 
     error_by_k[i-1, :]=error_promedio
 

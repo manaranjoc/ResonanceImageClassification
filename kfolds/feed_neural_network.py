@@ -5,6 +5,8 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation
 from keras.metrics import accuracy
 
+from joblib import load
+
 
 import time
 
@@ -12,18 +14,20 @@ import sys
 from pathlib import Path
 sys.path[0] = str(Path(sys.path[0]).parent)
 
-from metrics import metrics, meanMetrics, printMetrics
+from metrics import metrics, meanMetrics, printMetrics, stdMetrics
 
 model = Sequential()
 model.add(Dense(10, activation='relu',input_dim=16384))
-model.add(Dense(100, activation='relu'))
-model.add(Dense(100, activation='relu'))
-model.add(Dense(100, activation='relu'))
+model.add(Dense(50, activation='relu'))
+model.add(Dense(50, activation='relu'))
 model.add(Dense(1, activation='sigmoid'))
 
-train_images = np.load('saved_images/images_array_standar.npy')
+train_images = np.load('saved_images/images_array_normal.npy')
 x = train_images[:,:-1]
 y = train_images[:,-1]
+
+feature_model = load('feature_extraction.joblib')
+x = feature_model.transform(x)
 
 num_splits = 10
 
@@ -51,4 +55,8 @@ for train_index, test_index in kf.split(x):
 elapsed_time = time.time()-start
 
 mean_metrics = meanMetrics(exactitud)
+std_metrics = stdMetrics(exactitud)
 printMetrics(mean_metrics)
+print('Desviación estandar')
+print('########################################')
+printMetrics(std_metrics)

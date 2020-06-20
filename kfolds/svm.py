@@ -2,6 +2,7 @@ from sklearn.svm import LinearSVC
 from sklearn.model_selection import KFold
 import numpy as np
 
+from joblib import load
 
 import time
 
@@ -11,14 +12,18 @@ import sys
 from pathlib import Path
 sys.path[0] = str(Path(sys.path[0]).parent)
 
-from metrics import metrics, meanMetrics, printMetrics
+from metrics import metrics, meanMetrics, printMetrics, stdMetrics
 
 
 train_images = np.load('../saved_images/images_array_normal.npy')
 x = train_images[:,:-1]
 y = train_images[:,-1]
 
-C = np.logspace(1,2,2)
+feature_model = load('feature_extraction')
+x = feature_model.transform(x)
+
+#C = np.logspace(1,2,2)
+C = [0.01]
 #Gamma = np.logspace(-3,2,6)
 
 num_splits = 10
@@ -48,10 +53,14 @@ for c in C:
         exactitud[iteration, :] = metrics(y_test, y_pred)
         iteration += 1
 
+    error_standard = stdMetrics(error_promedio)
     error_promedio = meanMetrics(error_promedio)
 
     print('Error para C=', c)
     printMetrics(error_promedio)
+    print('Desviación estandar')
+    print('###################################')
+    printMetrics(error_standard)
 
     error_by_parameter[i,:]=error_promedio
     i += 1

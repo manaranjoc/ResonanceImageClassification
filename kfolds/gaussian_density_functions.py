@@ -22,3 +22,5 @@ det_s1 = np.linalg.det(sigma1)
 
 print(np.sqrt(det_s0))
 print(np.sqrt(det_s1))
+
+#Not finished because determinant 0
