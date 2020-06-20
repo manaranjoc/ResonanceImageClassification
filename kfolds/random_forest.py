@@ -30,6 +30,8 @@ i = 0
 
 start = time.time()
 
+saveFile = open('res.dat', 'w')
+
 for B in range(10,51,10):
 
     error_promedio = np.zeros((num_splits, 5))
@@ -54,9 +56,12 @@ for B in range(10,51,10):
     print('###########################################')
     printMetrics(error_promedio)
 
+    np.savetxt(saveFile, error_promedio)
+
     error_by_B[i, :]=error_promedio
     i+=1
 
+saveFile.close()
 elapsed_time = time.time()-start
 print('Elapsed time for one neuron Classification: ',elapsed_time)
 

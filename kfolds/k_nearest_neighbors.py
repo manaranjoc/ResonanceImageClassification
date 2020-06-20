@@ -12,7 +12,7 @@ sys.path[0] = str(Path(sys.path[0]).parent)
 
 from metrics import metrics, meanMetrics, printMetrics
 
-train_images = np.load('saved_images/images_array.npy')
+train_images = np.load('saved_images/images_array_standar.npy')
 
 x = train_images[:,:-1]
 y = train_images[:,-1]
@@ -29,6 +29,8 @@ k = 10
 error_by_k = np.zeros((k, 5))
 
 start = time.time()
+
+saveFile = open('res.dat', 'w')
 
 for i in range(1,k+1):
     clf = KNeighborsClassifier(n_neighbors=i, weights='uniform',n_jobs=-1)
@@ -49,12 +51,15 @@ for i in range(1,k+1):
 
     error_promedio = meanMetrics(error_promedio)
 
+    np.savetxt(saveFile, error_promedio)
+
     print('Error para', i, ' vecinos: ')
     print('########################################')
     printMetrics(error_promedio)
 
     error_by_k[i-1, :]=error_promedio
 
+saveFile.close()
 
 elapsed_time = time.time()-start
 print('Elapsed time for 10 k: ',elapsed_time)
