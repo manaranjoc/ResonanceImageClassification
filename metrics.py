@@ -37,3 +37,6 @@ def printMetrics(metrics):
 
 def meanMetrics(metrics):
     return np.mean(metrics, axis=0)
+
+def stdMetrics(metrics):
+    return np.std(metrics, axis=0)
