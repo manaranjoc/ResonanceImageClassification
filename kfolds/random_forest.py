@@ -21,8 +21,8 @@ y = train_images[:,-1]
 
 print("Images already Loaded")
 
-feature_model = load('feature_extraction.joblib')
-x = feature_model.transform(x)
+#feature_model = load('wrapping_method.joblib')
+#x = feature_model.transform(x)
 
 num_splits = 10
 

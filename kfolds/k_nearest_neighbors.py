@@ -14,15 +14,15 @@ sys.path[0] = str(Path(sys.path[0]).parent)
 
 from metrics import metrics, meanMetrics, printMetrics, stdMetrics
 
-train_images = np.load('saved_images/images_array_standar.npy')
+train_images = np.load('saved_images/images_array_normal.npy')
 
 x = train_images[:,:-1]
 y = train_images[:,-1]
 
 print("Images already Loaded")
 
-feature_model=load('feature_extraction.joblib')
-x = feature_model.transform(x)
+#feature_model=load('wrapping_method.joblib')
+#x = feature_model.transform(x)
 
 num_splits = 10
 
