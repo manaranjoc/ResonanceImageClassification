@@ -54,4 +54,11 @@ def imagesNormalization(imageList):
 
 def arrayToImage(array):
     return Image.fromarray(array)
+
+def imageToArray(image):
+    return np.asarray(image).astype('float32')
     
+def imagesToArray(imageList):
+    return [
+        imageToArray(image) for image in imageList
+    ]
